@@ -60,19 +60,13 @@
         // let ifc = await fetch(src).then((res) => res.arrayBuffer())
 
         webIFCLoader.load({
-          //   ifc,
+            // ifc,
           src,
           edges: true,
         })
-        //  webIFCLoader.load({
-        //         src: `ifcs/${file}`,
-        //         edges: true
-        //     });
-
-        // model.on("loaded", () => {
-        //     console.log("loaded model ");
-        // })
       }
+
+      webIFCLoader.fire('initialized');
     })()
   </script>
 </html>
