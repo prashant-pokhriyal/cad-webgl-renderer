@@ -30,6 +30,7 @@ app.get('/getList', async (req, res) => {
 
 app.get('/ifcs/:file', async (req, res) => {
   const file = await azure.fetchFile(containerClient, req.params.file)
+  res.header('Cache-Control', 'max-age=2592000000');
   res.send(file)
 })
 
