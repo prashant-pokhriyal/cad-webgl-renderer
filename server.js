@@ -3,8 +3,9 @@ const express = require('express')
 const path = require('path')
 const fs = require('fs')
 const azure = require('./azureHandler')
+const compression = require('compression')
 const { BlobServiceClient, StorageSharedKeyCredential } = require('@azure/storage-blob')
-const env = require('./env.json');
+const env = require('./env.json')
 
 const app = express()
 const port = 3000
@@ -16,6 +17,8 @@ const blobServiceClient = new BlobServiceClient(`https://${account}.blob.core.wi
 const containerClient = blobServiceClient.getContainerClient(containerName)
 
 process.env.APP_ENV = process.argv[2]
+
+app.use(compression({ filter: (req, res) => true }))
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'))
@@ -30,7 +33,7 @@ app.get('/getList', async (req, res) => {
 
 app.get('/ifcs/:file', async (req, res) => {
   const file = await azure.fetchFile(containerClient, req.params.file)
-  res.header('Cache-Control', 'max-age=2592000000');
+  res.header('Cache-Control', 'max-age=2592000000')
   res.send(file)
 })
 
