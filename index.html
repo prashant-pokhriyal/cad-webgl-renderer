@@ -30,9 +30,11 @@
     import {
       Viewer,
       WebIFCLoaderPlugin,
+      XKTLoaderPlugin,
     } from 'https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/xeokit-sdk.es.min.js'
     window.Viewer = Viewer
     window.WebIFCLoaderPlugin = WebIFCLoaderPlugin
+    window.XKTLoaderPlugin = XKTLoaderPlugin
   </script>
 
   <script id="source" type="module">
@@ -48,18 +50,25 @@
     const webIFCLoader = new WebIFCLoaderPlugin(viewer, {
       wasmPath: 'https://cdn.jsdelivr.net/npm/@xeokit/xeokit-sdk/dist/',
     })
+    const xktLoader = new XKTLoaderPlugin(viewer);
+    const MODULE_TYPE='xkt'
     window.webIFCLoader = webIFCLoader
     ;(async () => {
-      let data = await fetch('/getList').then((res) => res.json())
+      let data = await fetch(`${MODULE_TYPE}/getList`).then((res) => res.json())
 
       let length = 0 || data.files.length
       for (let i = 0; i < length; i++) {
-        let src = `ifcs/${data.files[i]}`
+        let src = `${MODULE_TYPE}/${data.files[i]}`
 
         console.log(src)
         // let ifc = await fetch(src).then((res) => res.arrayBuffer())
 
-        webIFCLoader.load({
+        // webIFCLoader.load({
+        //     // ifc,
+        //   src,
+        //   edges: true,
+        // })
+        xktLoader.load({
             // ifc,
           src,
           edges: true,
